@@ -1,5 +1,6 @@
 package com.yamashiro0110.oauth20.provider;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -13,6 +14,9 @@ import java.util.Set;
 
 @Service("customClientDetailsService")
 public class CustomClientDetailsService implements ClientDetailsService {
+    @Value("${oauth2.demo.oauthClientEndpoint:http://localhost:8080/client}")
+    private String oauthClientEndpoint;
+
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         BaseClientDetails clientDetails = new BaseClientDetails();
@@ -28,12 +32,13 @@ public class CustomClientDetailsService implements ClientDetailsService {
     }
 
     private List<String> resourceIds() {
-        return Arrays.asList("resource_1", "resource_2");
+        return Arrays.asList("oauth20-demo");
     }
 
     private Set<String> redirectUrls() {
         Set<String> redirectUrl = new LinkedHashSet<>();
-        redirectUrl.add("http://localhost:8100");
+        redirectUrl.add(this.oauthClientEndpoint + "/oauth");
+        redirectUrl.add(this.oauthClientEndpoint + "/api/simple/client");
         return redirectUrl;
     }
 
