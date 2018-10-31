@@ -16,6 +16,6 @@ include 'services:webservice'
 */
 
 rootProject.name = 'SpringBootOAuth2Demo'
-include 'oauth20.provider'
+include 'oauth20.authorization'
 include 'oauth20.client'
 include 'oauth20.resource'
