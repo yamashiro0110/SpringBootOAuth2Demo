@@ -1,0 +1,67 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yamashiro0110.oauth20.provider.ClientDetailsMapper">
+    <resultMap id="ClientDetails" type="org.springframework.security.oauth2.provider.client.BaseClientDetails">
+        <id column="client_id" property="clientId"/>
+        <result column="client_secret" property="clientSecret"/>
+        <result column="access_token_validity" property="accessTokenValiditySeconds"/>
+        <result column="refresh_token_validity" property="refreshTokenValiditySeconds"/>
+        <collection property="scope" column="scope" select="findScopesByClientId" />
+        <collection property="resourceIds" column="resource_id" select="findResourceIdsByClientId"/>
+        <collection property="authorizedGrantTypes" column="grant_type" select="findAuthorizedGrantTypesByClientId"/>
+        <collection property="registeredRedirectUris" column="redirect_uri" select="findRedirectUrlsByClientId"/>
+    </resultMap>
+
+    <select id="findByClientId" resultMap="ClientDetails">
+        SELECT
+            client_id,
+            client_secret,
+            access_token_validity,
+            refresh_token_validity
+        FROM
+            clients
+        <where>
+            AND client_id = #{clientId}
+        </where>
+    </select>
+
+    <select id="findScopesByClientId" resultType="string">
+        SELECT
+            scope
+        FROM
+            scopes
+        <where>
+            AND client_id = #{clientId}
+        </where>
+    </select>
+
+    <select id="findResourceIdsByClientId" resultType="string">
+        SELECT
+            resource_id
+        FROM
+            resource_ids
+        <where>
+            AND client_id = #{clientId}
+        </where>
+    </select>
+
+    <select id="findAuthorizedGrantTypesByClientId" resultType="string">
+        SELECT
+            authorized_grant_type grant_type
+        FROM
+            authorized_grant_types
+        <where>
+            AND client_id = #{clientId}
+        </where>
+    </select>
+
+    <select id="findRedirectUrlsByClientId" resultType="string">
+        SELECT
+            redirect_uri
+        FROM
+            redirect_uris
+        <where>
+            AND client_id = #{clientId}
+        </where>
+    </select>
+
+</mapper>
