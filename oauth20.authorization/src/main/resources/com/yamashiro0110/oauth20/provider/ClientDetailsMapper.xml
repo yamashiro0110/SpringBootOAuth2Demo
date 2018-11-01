@@ -5,10 +5,6 @@
         <result column="client_secret" property="clientSecret"/>
         <result column="access_token_validity" property="accessTokenValiditySeconds"/>
         <result column="refresh_token_validity" property="refreshTokenValiditySeconds"/>
-        <collection property="scope" column="scope" select="findScopesByClientId" />
-        <collection property="resourceIds" column="resource_id" select="findResourceIdsByClientId"/>
-        <collection property="authorizedGrantTypes" column="grant_type" select="findAuthorizedGrantTypesByClientId"/>
-        <collection property="registeredRedirectUris" column="redirect_uri" select="findRedirectUrlsByClientId"/>
     </resultMap>
 
     <select id="findByClientId" resultMap="ClientDetails">
