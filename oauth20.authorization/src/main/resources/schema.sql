@@ -11,12 +11,14 @@ CREATE TABLE IF NOT EXISTS clients (
 CREATE TABLE IF NOT EXISTS scopes (
     `client_id` VARCHAR(255) NOT NULL,
     `scope` VARCHAR(255) NOT NULL,
+    `created` DATETIME NOT NULL DEFAULT now(),
     CONSTRAINT fk_scopes_client_id FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
 
 CREATE TABLE IF NOT EXISTS resource_ids (
     `client_id` VARCHAR(255) NOT NULL,
     `resource_id` VARCHAR(255) NOT NULL,
+    `created` DATETIME NOT NULL DEFAULT now(),
     PRIMARY KEY(client_id, resource_id),
     CONSTRAINT fk_resource_ids_client_id FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
@@ -24,6 +26,7 @@ CREATE TABLE IF NOT EXISTS resource_ids (
 CREATE TABLE IF NOT EXISTS authorized_grant_types (
     `client_id` VARCHAR(255) NOT NULL,
     `authorized_grant_type` VARCHAR(255) NOT NULL,
+    `created` DATETIME NOT NULL DEFAULT now(),
     PRIMARY KEY(client_id, authorized_grant_type),
     CONSTRAINT fk_authorized_grant_types_client_id FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
@@ -31,6 +34,7 @@ CREATE TABLE IF NOT EXISTS authorized_grant_types (
 CREATE TABLE IF NOT EXISTS redirect_uris (
     `client_id` VARCHAR(255) NOT NULL,
     `redirect_uri` VARCHAR(255) NOT NULL,
+    `created` DATETIME NOT NULL DEFAULT now(),
     PRIMARY KEY(client_id, redirect_uri),
     CONSTRAINT fk_redirect_uris_client_id FOREIGN KEY (client_id) REFERENCES clients(client_id)
 );
