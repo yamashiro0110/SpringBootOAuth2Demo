@@ -10,7 +10,9 @@ INSERT INTO resource_ids(client_id, resource_id) VALUES
 ('client_id', 'resource_2');
 
 INSERT INTO authorized_grant_types(client_id, authorized_grant_type) VALUES
-('client_id', 'authorization_code');
+('client_id', 'authorization_code'),
+('client_id', 'password'),
+('client_id', 'client_credentials');
 
 INSERT INTO redirect_uris(client_id, redirect_uri) VALUES
 ('client_id', 'http://localhost:8080/client/api/simple/client');
