@@ -28,6 +28,8 @@ public class OAuthProviderConfig {
     public static class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
         @Resource(name = "oAuthClientDetailsService")
         private ClientDetailsService clientDetailsService;
+        @Resource(name = "clientDetailsUserDetailsService")
+        private ClientDetailsUserDetailsService clientDetailsUserDetailsService;
         @Resource(name = "clientAuthenticationManager")
         private AuthenticationManager authenticationManager;
 
@@ -38,17 +40,22 @@ public class OAuthProviderConfig {
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-            endpoints.tokenStore(this.tokenStore())
+            endpoints
+                    .tokenStore(this.tokenStore())
+                    .userDetailsService(this.clientDetailsUserDetailsService)
+                    /*
+                     * authenticationManagerを設定することでResourceOwnerPasswordTokenGranterが有効になり、
+                     * resource owner password credential grantが有効になる
+                     */
                     .authenticationManager(this.authenticationManager)
             ;
         }
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer security) {
-            security
-//                    .checkTokenAccess("isAuthenticated()")
+            security.passwordEncoder(NoOpPasswordEncoder.getInstance())
+                    .checkTokenAccess("isAuthenticated()")
                     .tokenKeyAccess("permitAll()")
-                    .passwordEncoder(NoOpPasswordEncoder.getInstance())
             ;
         }
 
@@ -70,7 +77,7 @@ public class OAuthProviderConfig {
             return super.authenticationManagerBean();
         }
 
-        @Bean
+        @Bean("clientDetailsUserDetailsService")
         public ClientDetailsUserDetailsService clientDetailsUserDetailsService() {
             ClientDetailsUserDetailsService clientDetailsUserDetailsService = new ClientDetailsUserDetailsService(this.clientDetailsService);
             clientDetailsUserDetailsService.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
@@ -79,20 +86,17 @@ public class OAuthProviderConfig {
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(this.clientDetailsUserDetailsService());
+            auth.userDetailsService(this.clientDetailsUserDetailsService())
+                    .passwordEncoder(NoOpPasswordEncoder.getInstance())
+            ;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-//                    .antMatchers("/login").permitAll()
-                    .antMatchers("/oauth/**").permitAll()
-//                    .and()
-//                    .formLogin()
-//                    .and()
-//                    .logout()
-//                    .and()
-//                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .anyRequest().authenticated()
+                    .and()
+                    .httpBasic()
                     .and()
                     .csrf().disable()
             ;
