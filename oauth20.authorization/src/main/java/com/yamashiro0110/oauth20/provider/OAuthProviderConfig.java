@@ -16,9 +16,10 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 public class OAuthProviderConfig {
 
@@ -32,10 +33,12 @@ public class OAuthProviderConfig {
         private ClientDetailsUserDetailsService clientDetailsUserDetailsService;
         @Resource(name = "clientAuthenticationManager")
         private AuthenticationManager authenticationManager;
+        @Resource
+        private DataSource dataSource;
 
         @Bean
         TokenStore tokenStore() {
-            return new InMemoryTokenStore();
+            return new JdbcTokenStore(this.dataSource);
         }
 
         @Override
