@@ -18,7 +18,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.resourceId("oauth20-demo");
+        resources.resourceId("resource_1");
     }
 
     @Override
@@ -33,8 +33,8 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     public ResourceServerTokenServices resourceServerTokenServices() {
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
         remoteTokenServices.setCheckTokenEndpointUrl(this.authorizationServerEndpoint + "/oauth/check_token");
-        remoteTokenServices.setClientId("sample-client-id");
-        remoteTokenServices.setClientSecret("sample-client-secret");
+        remoteTokenServices.setClientId("client_id");
+        remoteTokenServices.setClientSecret("client_secret");
         return remoteTokenServices;
     }
 }
