@@ -39,7 +39,7 @@ http://localhost:8100/provider/oauth/token
 curl -i -X POST \
    -H "Authorization:Basic Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=" \
    -H "Content-Type:application/x-www-form-urlencoded" \
- 'http://localhost:8100/provider/oauth/token?response_type=code&client_id=client_id&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fclient%2Fapi%2Fsimple%2Fclient&scope=read%2Bwrite&state=state_hoge&grant_type=client_credentials'
+ 'http://localhost:8100/provider/oauth/token?response_type=code&client_id=client_id&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fclient%2Fapi%2Fsimple%2Fclient&scope=read%2Bwrite&state=state_hoge&grant_type=authorization_code'
 ```
 
 - implicit grant
